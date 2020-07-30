@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "839528799253",
+    "firebase_url": "https://mnotes-fc210.firebaseio.com",
+    "project_id": "mnotes-fc210",
+    "storage_bucket": "mnotes-fc210.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:839528799253:android:e4afc8ee75ae1b8f48421c",
+        "android_client_info": {
+          "package_name": "net.bsinc.mnotes"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "839528799253-oruqh8ek841k3mhue1lov872hluharqi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAKYMAcoskMToMxJ5RKUjfhhxxqWp-OIjw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "839528799253-oruqh8ek841k3mhue1lov872hluharqi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
