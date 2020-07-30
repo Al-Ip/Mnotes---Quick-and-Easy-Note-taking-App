@@ -16,6 +16,10 @@
         "source": "C:\\Users\\aipsalat\\Desktop\\Mnotes\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher.png"
     },
     {
+        "merged": "C:\\Users\\aipsalat\\Desktop\\Mnotes\\app\\build\\intermediates\\res\\merged\\debug\\drawable_ic_baseline_more_vert_24.xml.flat",
+        "source": "C:\\Users\\aipsalat\\Desktop\\Mnotes\\app\\src\\main\\res\\drawable\\ic_baseline_more_vert_24.xml"
+    },
+    {
         "merged": "C:\\Users\\aipsalat\\Desktop\\Mnotes\\app\\build\\intermediates\\res\\merged\\debug\\mipmap-xxxhdpi_ic_launcher_round.png.flat",
         "source": "C:\\Users\\aipsalat\\Desktop\\Mnotes\\app\\src\\main\\res\\mipmap-xxxhdpi\\ic_launcher_round.png"
     },

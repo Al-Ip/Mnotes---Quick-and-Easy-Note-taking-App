@@ -12,14 +12,24 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.google.android.material.navigation.NavigationView;
+
+import net.bsinc.mnotes.model.Adapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle toggle;
     NavigationView nav_view;
+    RecyclerView noteList;
+    Adapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +38,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        noteList = findViewById(R.id.recylerView);
+
         drawerLayout = findViewById(R.id.drawer);
         nav_view = findViewById(R.id.navigationView);
         nav_view.setNavigationItemSelectedListener(this);
@@ -35,6 +47,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout.addDrawerListener(toggle);
         toggle.setDrawerIndicatorEnabled(true);
         toggle.syncState();
+
+        //Test data
+        List<String> titles = new ArrayList<>();
+        List<String> content = new ArrayList<>();
+
+        titles.add("First note title");
+        content.add("First note content sample");
+
+        titles.add("Second note title");
+        content.add("Second note content sample............this text will enlarge up to a certain point.............will add '...' after a certain amount of characters but for now this will work");
+
+        titles.add("Third note title");
+        content.add("Third note content sample");
+
+        adapter = new Adapter(titles, content);
+        noteList.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        noteList.setAdapter(adapter);
     }
 
     @Override
