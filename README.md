@@ -1,2 +1,2 @@
 # Mnote
-A simple note taking app for android
+A simple note taking app for android test
