@@ -5,4 +5,8 @@
     <string name="open">open</string>
     <string name="close">close</string>
 
+    <string name="title_activity_note_details">NoteDetails</string>
+    <string name="title_activity_add_notes">AddNotes</string>
+    <string name="title_activity_edit_notes">EditNotes</string>
+
 </resources>
