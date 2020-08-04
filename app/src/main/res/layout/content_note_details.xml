@@ -13,7 +13,7 @@
         android:id="@+id/noteDetailsContent"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:backgroundTint="@android:color/transparent"
+        android:background="#CA8888"
         android:fontFamily="@font/lato"
         android:isScrollContainer="true"
         android:padding="18dp"

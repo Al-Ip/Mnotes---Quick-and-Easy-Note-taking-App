@@ -6,6 +6,7 @@ import android.text.method.ScrollingMovementMethod;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -15,9 +16,9 @@ import androidx.appcompat.widget.Toolbar;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import net.bsinc.mnotes.R;
+import net.bsinc.mnotes.model.Note;
 
 public class NoteDetails extends AppCompatActivity {
-    Intent data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +28,8 @@ public class NoteDetails extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        data = getIntent();
+        //final int colorCode = Note.getRandomCardColor();
+        final Intent data = getIntent();
 
         TextView content = findViewById(R.id.noteDetailsContent);
         content.setMovementMethod(new ScrollingMovementMethod());
@@ -36,7 +38,7 @@ public class NoteDetails extends AppCompatActivity {
 
         title.setText(data.getStringExtra("title"));
         content.setText(data.getStringExtra("content"));
-        content.setBackgroundColor(getResources().getColor(data.getIntExtra("colorCode",0), null));
+        content.setBackgroundColor(getResources().getColor(data.getIntExtra("backgroundColor",0), null));
 
         //Add new edit float button
         FloatingActionButton fab = findViewById(R.id.editNoteFab);
@@ -47,6 +49,7 @@ public class NoteDetails extends AppCompatActivity {
                 Intent i = new Intent(v.getContext(), EditNote.class);
                 i.putExtra("title", data.getStringExtra("title"));
                 i.putExtra("content", data.getStringExtra("content"));
+                i.putExtra("backgroundColor", data.getIntExtra("backgroundColor",0));
                 i.putExtra("noteID", data.getStringExtra("noteID"));
                 startActivity(i);
             }

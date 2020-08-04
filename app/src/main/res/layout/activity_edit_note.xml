@@ -35,7 +35,7 @@
         android:id="@+id/editNoteContent"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:backgroundTint="@android:color/transparent"
+        android:background="#BF7E7E"
         android:ems="10"
         android:fontFamily="@font/lato"
         android:gravity="start|top"

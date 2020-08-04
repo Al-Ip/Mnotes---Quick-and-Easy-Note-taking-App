@@ -2,12 +2,16 @@ package net.bsinc.mnotes;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -30,10 +34,14 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
+import net.bsinc.mnotes.auth.Login;
+import net.bsinc.mnotes.auth.Register;
 import net.bsinc.mnotes.model.Adapter;
 import net.bsinc.mnotes.model.Note;
 import net.bsinc.mnotes.note.AddNote;
@@ -48,7 +56,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     RecyclerView noteList;
     Adapter adapter;
     FirebaseFirestore fStore;
+    FirebaseUser user;
+    FirebaseAuth fAuth;
     FirestoreRecyclerAdapter<Note, NoteViewHolder> noteAdapter;
+    Menu navMenus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,7 +70,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         //Getting from database
         fStore = FirebaseFirestore.getInstance();
-        Query query = fStore.collection("notes").orderBy("title", Query.Direction.DESCENDING);
+        fAuth = FirebaseAuth.getInstance();
+        user = fAuth.getCurrentUser();
+
+        // query notes > uuid > myNotes
+        Query query = fStore.collection("notes").document(user.getUid()).collection("myNotes").orderBy("title", Query.Direction.DESCENDING);
         FirestoreRecyclerOptions<Note> allNotes = new FirestoreRecyclerOptions.Builder<Note>()
                 .setQuery(query, Note.class)
                 .build();
@@ -82,7 +97,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         Intent i = new Intent(v.getContext(), NoteDetails.class);
                         i.putExtra("title", note.getTitle());
                         i.putExtra("content", note.getContent());
-                        i.putExtra("colorCode", colorCode);
+                        i.putExtra("backgroundColor", colorCode);
                         i.putExtra("noteID", docId);
                         v.getContext().startActivity(i);
                     }
@@ -101,6 +116,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 Intent i = new Intent(v.getContext(), EditNote.class);
                                 i.putExtra("title", note.getTitle());
                                 i.putExtra("content", note.getContent());
+                                i.putExtra("backgroundColor", colorCode);
                                 i.putExtra("noteID", docId);
                                 startActivity(i);
                                 return false;
@@ -151,6 +167,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         drawerLayout = findViewById(R.id.drawer);
         nav_view = findViewById(R.id.navigationView);
         nav_view.setNavigationItemSelectedListener(this);
+        navMenus= nav_view.getMenu();
         toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(toggle);
         toggle.setDrawerIndicatorEnabled(true);
@@ -174,13 +191,24 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 ////        noteList.setAdapter(adapter);
             noteList.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
             noteList.setAdapter(noteAdapter);
+
+
     }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        drawerLayout.closeDrawer(GravityCompat.START);
         switch (menuItem.getItemId()){
             case R.id.addnote:
                 startActivity(new Intent(this, AddNote.class));
+                break;
+            case R.id.account:
+                if(user.isAnonymous())
+                    startActivity(new Intent(this, Login.class));
+                break;
+            case R.id.logout:
+                checkUser();
+                break;
             default:
                 Toast.makeText(this, "Coming soon.", Toast.LENGTH_SHORT).show();
         }
@@ -192,6 +220,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.options_menu, menu);
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+            if (user.isAnonymous())
+                navMenus.findItem(R.id.account).setVisible(true);
+            else
+                navMenus.findItem(R.id.account).setVisible(false);
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
@@ -228,5 +266,45 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onStop();
         if(noteAdapter != null)
             noteAdapter.stopListening();
+    }
+
+    private void checkUser(){
+        // if user is real or not
+        if(user.isAnonymous()){
+            displayAlert();
+        }
+        else {
+            FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(getApplicationContext(), Splash.class));
+            finish();
+        }
+    }
+    private void displayAlert(){
+        AlertDialog.Builder warning = new AlertDialog.Builder(this)
+                .setTitle("WARNING: Are you sure ?")
+                .setMessage("You are logged in with temporary account. Logging out will DELETE all the notes you created.")
+                .setPositiveButton("Create Account", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        startActivity(new Intent(getApplicationContext(), Register.class));
+                        finish();
+                    }
+                })
+                .setNegativeButton("Logout temporary account", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // ToDo: Delete all the notes created by the anonymous user
+
+                        // ToDo: Delete the anonymous user
+                        user.delete().addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                startActivity(new Intent(getApplicationContext(), Splash.class));
+                                finish();
+                            }
+                        });
+                    }
+                });
+        warning.show();
     }
 }

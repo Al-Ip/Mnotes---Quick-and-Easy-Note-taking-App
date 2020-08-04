@@ -10,10 +10,6 @@
                 android:id="@+id/addnote"
                 android:icon="@drawable/ic_baseline_note_add_24"
                 android:title="Add Note" />
-            <item
-                android:id="@+id/sync"
-                android:icon="@drawable/ic_baseline_sync_24"
-                android:title="Synchronize" />
         </menu>
     </item>
 
@@ -30,8 +26,12 @@
         </menu>
     </item>
 
-    <item android:title="Logout">
+    <item android:title="Authentication">
         <menu>
+            <item
+                android:id="@+id/account"
+                android:icon="@drawable/ic_baseline_how_to_reg_24"
+                android:title="Account: Login/ Register" />
             <item
                 android:id="@+id/logout"
                 android:icon="@drawable/ic_baseline_lock_open_24"

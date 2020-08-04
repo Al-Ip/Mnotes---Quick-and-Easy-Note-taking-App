@@ -34,7 +34,7 @@ public class Note {
         this.content = content;
     }
 
-    public int getRandomCardColor(){
+    public static int getRandomCardColor(){
         List<Integer> colorCode = new ArrayList<>();
         colorCode.add(R.color.silverPink);
         colorCode.add(R.color.canary);
