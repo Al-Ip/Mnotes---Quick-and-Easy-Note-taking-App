@@ -34,6 +34,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
@@ -50,17 +51,18 @@ import net.bsinc.mnotes.note.NoteDetails;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
-    DrawerLayout drawerLayout;
-    ActionBarDrawerToggle toggle;
-    NavigationView nav_view;
-    RecyclerView noteList;
-    FirebaseFirestore fStore;
-    FirebaseUser user;
-    FirebaseAuth fAuth;
-    FirestoreRecyclerAdapter<Note, NoteViewHolder> noteAdapter;
-    Menu navMenus;
-    TextView navUsername, navEmail;
-    Intent data;
+    private DrawerLayout drawerLayout;
+    private ActionBarDrawerToggle toggle;
+    private NavigationView nav_view;
+    private RecyclerView noteList;
+    private FirebaseFirestore fStore;
+    private FirebaseUser user;
+    private FirebaseAuth fAuth;
+    private FirestoreRecyclerAdapter<Note, NoteViewHolder> noteAdapter;
+    private FirebaseAnalytics mFirebaseAnalytics;
+    private Menu navMenus;
+    private TextView navUsername, navEmail;
+    private Intent data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fStore = FirebaseFirestore.getInstance();
         fAuth = FirebaseAuth.getInstance();
         user = fAuth.getCurrentUser();
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         data = getIntent();
 
