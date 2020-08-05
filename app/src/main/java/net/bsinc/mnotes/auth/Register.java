@@ -23,6 +23,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import net.bsinc.mnotes.MainActivity;
 import net.bsinc.mnotes.R;
+import net.bsinc.mnotes.note.EditNote;
 
 public class Register extends AppCompatActivity {
     EditText rUserName, rUserEmail, rUserPass, rUserConfirmPass;
@@ -49,16 +50,9 @@ public class Register extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        loginAct.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(getApplicationContext(), Login.class));
-            }
-        });
-
         syncAccount.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
                 String uUsername = rUserName.getText().toString();
                 String uUserEmail = rUserEmail.getText().toString();
                 String uUserPass = rUserPass.getText().toString();
@@ -79,6 +73,10 @@ public class Register extends AppCompatActivity {
                     @Override
                     public void onSuccess(AuthResult authResult) {
                         Toast.makeText(Register.this, "Successfully Created An Account!", Toast.LENGTH_LONG).show();
+//                        Intent i = new Intent(view.getContext(), MainActivity.class);
+//                        i.putExtra("username", rUserName.toString());
+//                        i.putExtra("email", rUserEmail.toString());
+//                        startActivity(i);
                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
                     }
                 }).addOnFailureListener(new OnFailureListener() {

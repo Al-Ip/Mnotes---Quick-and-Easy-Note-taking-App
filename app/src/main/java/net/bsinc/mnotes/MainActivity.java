@@ -54,12 +54,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     ActionBarDrawerToggle toggle;
     NavigationView nav_view;
     RecyclerView noteList;
-    Adapter adapter;
     FirebaseFirestore fStore;
     FirebaseUser user;
     FirebaseAuth fAuth;
     FirestoreRecyclerAdapter<Note, NoteViewHolder> noteAdapter;
     Menu navMenus;
+    TextView navUsername, navEmail;
+    Intent data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +74,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         fAuth = FirebaseAuth.getInstance();
         user = fAuth.getCurrentUser();
 
+        data = getIntent();
+
         // query notes > uuid > myNotes
         Query query = fStore.collection("notes").document(user.getUid()).collection("myNotes").orderBy("title", Query.Direction.DESCENDING);
         FirestoreRecyclerOptions<Note> allNotes = new FirestoreRecyclerOptions.Builder<Note>()
@@ -85,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 noteViewHolder.noteTitle.setText(note.getTitle());
                 noteViewHolder.noteContent.setText(note.getContent());
                 // integer variable stores the random color so it can display it on contents background
-                final int colorCode = note.getRandomCardColor();
+                final int colorCode = Note.getRandomCardColor();
                 noteViewHolder.mCardView.setCardBackgroundColor(noteViewHolder.view.getResources().getColor(colorCode, null));
 
                 //Required for the editing of note
@@ -173,27 +176,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         toggle.setDrawerIndicatorEnabled(true);
         toggle.syncState();
 
-//        //Test data
-////        List<String> titles = new ArrayList<>();
-////        List<String> content = new ArrayList<>();
-////
-////        titles.add("First note title");
-////        content.add("First note content sample");
-////
-////        titles.add("Second note title");
-////        content.add("Second note content sample............this text will enlarge up to a certain point.............will add '...' after a certain amount of characters but for now this will work");
-////
-////        titles.add("Third note title");
-////        content.add("Third note content sample");
-////
-////        adapter = new Adapter(titles, content);
-////        noteList.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-////        noteList.setAdapter(adapter);
-            noteList.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
-            noteList.setAdapter(noteAdapter);
-
+        noteList.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
+        noteList.setAdapter(noteAdapter);
+        
 
     }
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {

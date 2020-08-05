@@ -43,7 +43,7 @@
             app:layout_constraintTop_toBottomOf="@+id/nav_head_title" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/navUsername"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -52,13 +52,14 @@
             android:fontFamily="@font/lato"
             android:text="Username...."
             android:textColor="@color/common_google_signin_btn_text_dark_pressed"
-            app:layout_constraintBottom_toTopOf="@+id/textView4"
+            app:layout_constraintBottom_toTopOf="@+id/navEmail"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            tools:visibility="invisible" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/navEmail"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -70,7 +71,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            tools:visibility="invisible" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>

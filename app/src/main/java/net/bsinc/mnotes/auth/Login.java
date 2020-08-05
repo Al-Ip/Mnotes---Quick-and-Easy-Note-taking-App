@@ -30,6 +30,7 @@ public class Login extends AppCompatActivity {
     Button loginNow;
     TextView forgetPassword, createAccount;
     FirebaseAuth fAuth;
+    FirebaseUser user;
     FirebaseFirestore fStore;
     ProgressBar spinner;
 
@@ -43,6 +44,7 @@ public class Login extends AppCompatActivity {
 
         fAuth = FirebaseAuth.getInstance();
         fStore =FirebaseFirestore.getInstance();
+        user = fAuth.getCurrentUser();
 
         lEmail = findViewById(R.id.email);
         lPassword = findViewById(R.id.lPassword);
@@ -68,8 +70,6 @@ public class Login extends AppCompatActivity {
                 spinner.setVisibility(view.VISIBLE);
 
                 if(fAuth.getCurrentUser().isAnonymous()){
-                    FirebaseUser user = fAuth.getCurrentUser();
-
                     fStore.collection("notes").document(user.getUid()).delete().addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void aVoid) {
