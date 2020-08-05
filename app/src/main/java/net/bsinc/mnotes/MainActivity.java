@@ -103,6 +103,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                         i.putExtra("backgroundColor", colorCode);
                         i.putExtra("noteID", docId);
                         v.getContext().startActivity(i);
+                        overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
                     }
                 });
 
@@ -122,6 +123,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                                 i.putExtra("backgroundColor", colorCode);
                                 i.putExtra("noteID", docId);
                                 startActivity(i);
+                                overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
                                 return false;
                             }
                         });
@@ -163,6 +165,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(v.getContext(), AddNote.class));
+                overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
             }
         });
 
@@ -178,7 +181,21 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         noteList.setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         noteList.setAdapter(noteAdapter);
-        
+
+        // getting custom view header so we can get the textview name and email
+        View headerView = nav_view.getHeaderView(0);
+        navUsername = headerView.findViewById(R.id.navUsername);
+        navEmail = headerView.findViewById(R.id.navEmail);
+
+        if(user.isAnonymous()){
+            navEmail.setVisibility(View.GONE);
+            navUsername.setText("Temporary User (Create a new Account!)");
+            //navUsername.setTextColor(getResources().getColor(R.color.colorPrimaryDark, null));
+        }
+        else {
+            navEmail.setText(user.getEmail());
+            navUsername.setText(user.getDisplayName());
+        }
 
     }
 
@@ -189,16 +206,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (menuItem.getItemId()){
             case R.id.addnote:
                 startActivity(new Intent(this, AddNote.class));
+                overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
                 break;
             case R.id.account:
-                if(user.isAnonymous())
+                if(user.isAnonymous()) {
                     startActivity(new Intent(this, Login.class));
+                    overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+                }
                 break;
             case R.id.logout:
                 checkUser();
                 break;
             default:
-                Toast.makeText(this, "Coming soon.", Toast.LENGTH_SHORT).show();
+                break;
         }
         return false;
     }
@@ -275,7 +295,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         startActivity(new Intent(getApplicationContext(), Register.class));
-                        finish();
+                        overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
                     }
                 })
                 .setNegativeButton("Logout temporary account", new DialogInterface.OnClickListener() {
@@ -288,7 +308,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             @Override
                             public void onSuccess(Void aVoid) {
                                 startActivity(new Intent(getApplicationContext(), Splash.class));
-                                finish();
+                                overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
                             }
                         });
                     }

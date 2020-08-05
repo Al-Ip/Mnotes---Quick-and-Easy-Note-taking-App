@@ -30,6 +30,7 @@ public class Splash extends AppCompatActivity {
                 // check if the user is logged in
                 if(firebaseAuth.getCurrentUser() != null){
                     startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                    overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
                     finish();
                 }
                 else{
@@ -39,6 +40,7 @@ public class Splash extends AppCompatActivity {
                         public void onSuccess(AuthResult authResult) {
                             Toast.makeText(Splash.this, "Logged in with Temporary Account!", Toast.LENGTH_SHORT).show();
                             startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
                             finish();
                         }
                     }).addOnFailureListener(new OnFailureListener() {

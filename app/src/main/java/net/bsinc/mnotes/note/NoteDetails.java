@@ -52,6 +52,7 @@ public class NoteDetails extends AppCompatActivity {
                 i.putExtra("backgroundColor", data.getIntExtra("backgroundColor",0));
                 i.putExtra("noteID", data.getStringExtra("noteID"));
                 startActivity(i);
+                overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
             }
         });
     }

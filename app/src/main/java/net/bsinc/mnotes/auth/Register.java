@@ -20,6 +20,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.EmailAuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 import net.bsinc.mnotes.MainActivity;
 import net.bsinc.mnotes.R;
@@ -31,6 +33,8 @@ public class Register extends AppCompatActivity {
     TextView loginAct;
     ProgressBar progressBar;
     FirebaseAuth firebaseAuth;
+    FirebaseUser user;
+    UserProfileChangeRequest request;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,11 +53,12 @@ public class Register extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar4);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        user = firebaseAuth.getCurrentUser();
 
         syncAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                String uUsername = rUserName.getText().toString();
+                final String uUsername = rUserName.getText().toString();
                 String uUserEmail = rUserEmail.getText().toString();
                 String uUserPass = rUserPass.getText().toString();
                 String uConfirmPass = rUserConfirmPass.getText().toString();
@@ -73,11 +78,16 @@ public class Register extends AppCompatActivity {
                     @Override
                     public void onSuccess(AuthResult authResult) {
                         Toast.makeText(Register.this, "Successfully Created An Account!", Toast.LENGTH_LONG).show();
-//                        Intent i = new Intent(view.getContext(), MainActivity.class);
-//                        i.putExtra("username", rUserName.toString());
-//                        i.putExtra("email", rUserEmail.toString());
-//                        startActivity(i);
+
+                        // setting data for nav username and email textview
+                        request = new UserProfileChangeRequest.Builder()
+                                .setDisplayName(uUsername)
+                                .build();
+                        user.updateProfile(request);
                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+                        finish();
+
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -95,6 +105,8 @@ public class Register extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 startActivity(new Intent(getApplicationContext(), Login.class));
+                overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+                finish();
             }
         });
 

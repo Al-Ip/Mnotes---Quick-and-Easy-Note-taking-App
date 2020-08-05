@@ -83,6 +83,8 @@ public class EditNote extends AppCompatActivity {
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(EditNote.this, "Note Edited Successfully!", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                        overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
+                        finish();
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override

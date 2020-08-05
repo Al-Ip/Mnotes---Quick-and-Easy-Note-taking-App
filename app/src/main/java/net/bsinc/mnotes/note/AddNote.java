@@ -75,6 +75,7 @@ public class AddNote extends AppCompatActivity {
                     public void onSuccess(Void aVoid) {
                         Toast.makeText(AddNote.this, "Note Added Successfully!", Toast.LENGTH_SHORT).show();
                         onBackPressed();
+                        overridePendingTransition(R.anim.slide_up, R.anim.slide_down);
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override

@@ -55,8 +55,7 @@
             app:layout_constraintBottom_toTopOf="@+id/navEmail"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:visibility="invisible" />
+            app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
             android:id="@+id/navEmail"
@@ -71,8 +70,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            tools:visibility="invisible" />
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </LinearLayout>
